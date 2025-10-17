@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3M AI Agents | Accelerating Science Applied to Life™</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c2c2c;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .logo {
+            background: #FF0000;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 900;
+            padding: 0.3rem 0.8rem;
+            letter-spacing: 0.15rem;
+            display: inline-block;
+            border-radius: 4px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            opacity: 1;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-top: 0.75rem;
+            font-weight: 300;
+        }
+
+        /* Navigation Tabs */
+        .tabs-container {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .tabs {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            gap: 0;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 180px;
+            padding: 1.2rem 1.5rem;
+            background: white;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tab:hover {
+            background: #f8f8f8;
+            color: #FF0000;
+        }
+
+        .tab.active {
+            color: #FF0000;
+            border-bottom-color: #FF0000;
+            background: #fff;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-intro h2 {
+            font-size: 2.5rem;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+        }
+
+        .section-intro p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Agent Cards */
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .agent-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(255, 0, 0, 0.15);
+            border-color: #FF0000;
+        }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .agent-icon {
+            font-size: 2.5rem;
+        }
+
+        .agent-title {
+            flex: 1;
+        }
+
+        .agent-title h3 {
+            font-size: 1.5rem;
+            color: #2c2c2c;
+            margin-bottom: 0.25rem;
+        }
+
+        .agent-title .problem {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: normal;
+        }
+
+        /* Metrics */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #7C3AED;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Capabilities */
+        .capabilities {
+            margin: 1.5rem 0;
+        }
+
+        .capabilities h4 {
+            font-size: 1.1rem;
+            color: #2c2c2c;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .capabilities-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .capability-item {
+            font-size: 0.9rem;
+            color: #555;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .capability-item:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10B981;
+            font-weight: bold;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .demo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .demo-header h4 {
+            font-size: 1.1rem;
+            color: #2c2c2c;
+        }
+
+        .demo-input {
+            margin-bottom: 1rem;
+        }
+
+        .demo-input label {
+            display: block;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .demo-input input,
+        .demo-input select,
+        .demo-input textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .demo-input textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
+        }
+
+        .demo-button:active {
+            transform: translateY(0);
+        }
+
+        .demo-result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #10B981;
+            display: none;
+        }
+
+        .demo-result.show {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result-content {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .result-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .result-metric {
+            text-align: center;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .result-metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF0000;
+        }
+
+        .result-metric-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        /* Claude Code & Enterprise Sections */
+        .enterprise-section {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .enterprise-section h2 {
+            font-size: 2.5rem;
+            color: #2c2c2c;
+            margin-bottom: 1rem;
+        }
+
+        .enterprise-section .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .use-case {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #FF0000;
+        }
+
+        .use-case h4 {
+            font-size: 1.2rem;
+            color: #2c2c2c;
+            margin-bottom: 0.75rem;
+        }
+
+        .use-case ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .use-case li {
+            font-size: 0.9rem;
+            color: #555;
+            padding: 0.4rem 0 0.4rem 1.5rem;
+            position: relative;
+        }
+
+        .use-case li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #FF0000;
+            font-weight: bold;
+        }
+
+        .enterprise-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+        }
+
+        .enterprise-metric {
+            text-align: center;
+        }
+
+        .enterprise-metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FF0000;
+            margin-bottom: 0.5rem;
+        }
+
+        .enterprise-metric-label {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c2c2c;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .agents-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics,
+            .capabilities-list,
+            .result-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                min-width: 100%;
+            }
+
+            .enterprise-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="logo">3M</div>
+            </div>
+            <div class="tagline">Accelerating Innovation with AI-Powered Intelligence</div>
+            <div class="subtitle">Strategic Vision for Launching 1,000 New Products by 2027 | Science Applied to Life™</div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab active" onclick="showSection('strategy')">
+                🎯 Strategic Vision
+            </button>
+            <button class="tab" onclick="showSection('safety-industrial')">
+                🏗️ Safety & Industrial
+            </button>
+            <button class="tab" onclick="showSection('transportation')">
+                🚗 Transportation & Electronics
+            </button>
+            <button class="tab" onclick="showSection('consumer')">
+                🏠 Consumer Products
+            </button>
+            <button class="tab" onclick="showSection('innovation')">
+                🔬 Innovation & R&D
+            </button>
+            <button class="tab" onclick="showSection('why-anthropic')">
+                🛡️ Why Anthropic
+            </button>
+            <button class="tab" onclick="showSection('claude-code')">
+                💻 Development Acceleration
+            </button>
+            <button class="tab" onclick="showSection('enterprise')">
+                🌐 Claude for Enterprise
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Strategic Vision Section -->
+        <div id="strategy" class="section active">
+            <div class="enterprise-section" style="margin-bottom: 3rem;">
+                <h2>3M's 2025 Strategic Transformation</h2>
+                <div class="subtitle">Driving Growth, Operational Excellence, and Shareholder Value Through Innovation</div>
+
+                <div style="margin: 3rem 0; padding: 2rem; background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%); border-radius: 12px; color: white;">
+                    <h3 style="color: white; margin-bottom: 1rem; font-size: 1.8rem;">Post-Healthcare Spin: Three Focused Business Segments</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.8; opacity: 0.95;">
+                        Following the successful spin-off of Solventum (healthcare business) in 2024, 3M is now a leaner, more focused industrial technology company with three core segments driving innovation across safety, transportation, and consumer markets.
+                    </p>
+                    <div style="margin-top: 1.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+                        <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 8px; backdrop-filter: blur(10px);">
+                            <div style="font-size: 2rem; font-weight: 700;">44.6%</div>
+                            <div style="font-size: 0.95rem; margin-top: 0.5rem;">Safety & Industrial Revenue Share</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 8px; backdrop-filter: blur(10px);">
+                            <div style="font-size: 2rem; font-weight: 700;">34.1%</div>
+                            <div style="font-size: 0.95rem; margin-top: 0.5rem;">Transportation & Electronics Share</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 8px; backdrop-filter: blur(10px);">
+                            <div style="font-size: 2rem; font-weight: 700;">20.1%</div>
+                            <div style="font-size: 0.95rem; margin-top: 0.5rem;">Consumer Products Share</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0;">Three Strategic Priorities</h3>
+
+                <div class="use-cases">
+                    <div class="use-case">
+                        <h4>📈 Reinvigorate Top-Line Growth</h4>
+                        <p style="color: #666; margin-bottom: 1rem; line-height: 1.7;">
+                            Launch 1,000 new products from 2025-2027 with $3.5B R&D investment focused on innovation and artificial intelligence.
+                        </p>
+                        <ul>
+                            <li>1,000 new products launching by 2027</li>
+                            <li>$3.5B R&D investment</li>
+                            <li>30% revenue from products under 5 years old</li>
+                            <li>AI-driven product development (PIMLAD)</li>
+                            <li>Commercial excellence and customer focus</li>
+                        </ul>
+                    </div>
+
+                    <div class="use-case">
+                        <h4>⚙️ Drive Operational Performance</h4>
+                        <p style="color: #666; margin-bottom: 1rem; line-height: 1.7;">
+                            Achieve $300M+ in cost savings through factory automation and AI-powered process optimization.
+                        </p>
+                        <ul>
+                            <li>80 automation projects underway</li>
+                            <li>$300M cost savings target</li>
+                            <li>700 positions optimized through attrition</li>
+                            <li>Supply chain resilience improvements</li>
+                            <li>Quality control AI integration</li>
+                        </ul>
+                    </div>
+
+                    <div class="use-case">
+                        <h4>💰 Deploy Capital Effectively</h4>
+                        <p style="color: #666; margin-bottom: 1rem; line-height: 1.7;">
+                            Return $10B+ cash to shareholders while investing in high-growth innovation areas and sustainability.
+                        </p>
+                        <ul>
+                            <li>$10B+ shareholder returns planned</li>
+                            <li>Strategic acquisitions in focus areas</li>
+                            <li>Balanced innovation portfolio</li>
+                            <li>Sustainability investments (carbon, water, plastics)</li>
+                            <li>Resource optimization across 60,000+ products</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0;">AI-First Innovation Strategy</h3>
+
+                <div style="background: #f8f9fa; padding: 2.5rem; border-radius: 12px; border-left: 4px solid #FF0000; margin-bottom: 2rem;">
+                    <p style="font-size: 1.15rem; color: #555; line-height: 1.9; margin-bottom: 1.5rem;">
+                        "Artificial intelligence and AI will fundamentally change how we do research. We're using AI to accelerate materials discovery, predict product performance, and bring innovations to market faster than ever before."
+                    </p>
+                    <div style="text-align: right; font-weight: 600; color: #FF0000;">— 3M Leadership on AI Strategy</div>
+                </div>
+
+                <div class="use-cases" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="use-case">
+                        <h4>🧬 PIMLAD™ Technology</h4>
+                        <p style="color: #666; font-size: 0.95rem;">
+                            Physics-Informed Machine Learning & Accelerated Design combining AI with materials science
+                        </p>
+                    </div>
+
+                    <div class="use-case">
+                        <h4>🗂️ Digital Materials Hub</h4>
+                        <p style="color: #666; font-size: 0.95rem;">
+                            AI platform with 300+ product model combinations predicting material performance
+                        </p>
+                    </div>
+
+                    <div class="use-case">
+                        <h4>🤖 Generative AI Products</h4>
+                        <p style="color: #666; font-size: 0.95rem;">
+                            AI-developed innovations like Cubitron™ 3 abrasive demonstrate the power of machine learning
+                        </p>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0;">2025 Financial Performance & Outlook</h3>
+
+                <div class="enterprise-metrics">
+                    <div class="enterprise-metric">
+                        <div class="enterprise-metric-value">60,000+</div>
+                        <div class="enterprise-metric-label">Products in Portfolio</div>
+                    </div>
+                    <div class="enterprise-metric">
+                        <div class="enterprise-metric-value">$3.5B</div>
+                        <div class="enterprise-metric-label">R&D Investment (2025-2027)</div>
+                    </div>
+                    <div class="enterprise-metric">
+                        <div class="enterprise-metric-value">1,000</div>
+                        <div class="enterprise-metric-label">New Products by 2027</div>
+                    </div>
+                    <div class="enterprise-metric">
+                        <div class="enterprise-metric-value">$10B+</div>
+                        <div class="enterprise-metric-label">Shareholder Returns Planned</div>
+                    </div>
+                </div>
+
+                <div style="margin: 3rem 0; padding: 2.5rem; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: #2c2c2c;">Key Challenges Where AI Can Drive Impact</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
+                        <div>
+                            <h4 style="color: #FF0000; margin-bottom: 0.75rem; font-size: 1.2rem;">👥 Talent & Skills</h4>
+                            <p style="color: #666; line-height: 1.8;">
+                                Address shortage of data scientists and AI specialists while accelerating workforce upskilling and cross-functional collaboration
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: #FF0000; margin-bottom: 0.75rem; font-size: 1.2rem;">⏱️ Speed to Market</h4>
+                            <p style="color: #666; line-height: 1.8;">
+                                Reduce time and costs for product development, testing, and validation to hit aggressive 1,000-product launch target
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: #FF0000; margin-bottom: 0.75rem; font-size: 1.2rem;">🔗 Supply Chain Resilience</h4>
+                            <p style="color: #666; line-height: 1.8;">
+                                Mitigate $850M annual tariff impacts and address automotive/abrasives demand challenges through predictive optimization
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: #FF0000; margin-bottom: 0.75rem; font-size: 1.2rem;">💡 Innovation Culture</h4>
+                            <p style="color: #666; line-height: 1.8;">
+                                Maintain startup-like agility at enterprise scale, balancing core improvements with exploratory moonshot innovations
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); padding: 3rem; border-radius: 12px; color: white; text-align: center; margin-top: 3rem;">
+                    <h3 style="color: white; font-size: 2.2rem; margin-bottom: 1rem;">How AI Agents Accelerate This Strategy</h3>
+                    <p style="font-size: 1.2rem; opacity: 0.9; max-width: 900px; margin: 0 auto 2rem auto; line-height: 1.8;">
+                        3M is building 24 production-ready AI agents powered by Claude Sonnet 4.5 that accelerate materials discovery, optimize manufacturing, enhance product quality, and bring innovations to market faster.
+                    </p>
+                    <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                        <button onclick="showSection('safety-industrial')" style="background: #FF0000; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                            Explore Safety & Industrial Agents →
+                        </button>
+                        <button onclick="showSection('innovation')" style="background: #FF0000; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                            Explore Innovation Agents →
+                        </button>
+                        <button onclick="showSection('transportation')" style="background: #FF0000; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                            Explore Transportation Agents →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Safety & Industrial Section -->
+        <div id="safety-industrial" class="section">
+            <div class="section-intro">
+                <h2>🏗️ Safety & Industrial</h2>
+                <p>Transform the largest business segment (44.6% of revenue) with 8 specialized AI agents for manufacturing optimization, quality control, and workplace safety</p>
+            </div>
+
+            <div class="agents-grid">
+                <!-- Agent 1: Manufacturing Automation Intelligence -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">🤖</div>
+                        <div class="agent-title">
+                            <h3>Manufacturing Automation Intelligence Agent</h3>
+                            <div class="problem">80 automation projects underway, targeting $300M savings</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">42%</div>
+                            <div class="metric-label">Faster Process Optimization</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$300M</div>
+                            <div class="metric-label">Annual Cost Savings Target</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">35%</div>
+                            <div class="metric-label">Defect Rate Reduction</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Real-time production line optimization</div>
+                            <div class="capability-item">Predictive maintenance scheduling</div>
+                            <div class="capability-item">Quality defect prediction and prevention</div>
+                            <div class="capability-item">Energy consumption optimization</div>
+                            <div class="capability-item">Workforce redeployment planning</div>
+                            <div class="capability-item">ROI tracking for 80 automation projects</div>
+                        </div>
+                    </div>
+
+                    <div class="demo-section">
+                        <div class="demo-header">
+                            <h4>🎯 Interactive Demo</h4>
+                        </div>
+                        <div class="demo-input">
+                            <label>Select Production Line:</label>
+                            <select id="mfg-line">
+                                <option>Abrasives Manufacturing (Cubitron™ 3)</option>
+                                <option>Adhesives Production Line</option>
+                                <option>Respiratory Protection Assembly</option>
+                                <option>Industrial Tape Manufacturing</option>
+                            </select>
+                        </div>
+                        <div class="demo-input">
+                            <label>Optimization Goal:</label>
+                            <select id="mfg-goal">
+                                <option>Reduce Cycle Time</option>
+                                <option>Improve First-Pass Yield</option>
+                                <option>Minimize Energy Usage</option>
+                                <option>Predict Equipment Failures</option>
+                            </select>
+                        </div>
+                        <button class="demo-button" onclick="runManufacturingDemo()">
+                            Optimize Production →
+                        </button>
+                        <div id="mfg-result" class="demo-result"></div>
+                    </div>
+                </div>
+
+                <!-- Agent 2: Quality Control Vision AI -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">👁️</div>
+                        <div class="agent-title">
+                            <h3>Quality Control Vision AI Agent</h3>
+                            <div class="problem">Ensuring consistency across 60,000+ products</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">99.7%</div>
+                            <div class="metric-label">Defect Detection Accuracy</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">8x</div>
+                            <div class="metric-label">Faster Inspection</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$45M</div>
+                            <div class="metric-label">Annual Savings from Rework Reduction</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Computer vision defect detection</div>
+                            <div class="capability-item">Real-time quality scoring</div>
+                            <div class="capability-item">Root cause analysis automation</div>
+                            <div class="capability-item">Continuous improvement recommendations</div>
+                            <div class="capability-item">Supplier material validation</div>
+                            <div class="capability-item">Compliance documentation automation</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent 3: Supply Chain Resilience -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">🗺️</div>
+                        <div class="agent-title">
+                            <h3>Supply Chain Resilience Intelligence Agent</h3>
+                            <div class="problem">Mitigating $850M annual tariff impacts</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">$850M</div>
+                            <div class="metric-label">Tariff Impact to Mitigate</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">48hr</div>
+                            <div class="metric-label">Alternative Sourcing Time</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">38%</div>
+                            <div class="metric-label">Inventory Optimization</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Geopolitical risk monitoring</div>
+                            <div class="capability-item">Tariff impact scenario modeling</div>
+                            <div class="capability-item">Multi-tier supplier visibility</div>
+                            <div class="capability-item">Alternative sourcing recommendations</div>
+                            <div class="capability-item">Demand forecasting and planning</div>
+                            <div class="capability-item">Critical materials tracking</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent 4: Workplace Safety AI Copilot -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">🦺</div>
+                        <div class="agent-title">
+                            <h3>Workplace Safety AI Copilot</h3>
+                            <div class="problem">Preventing incidents across global manufacturing facilities</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">72%</div>
+                            <div class="metric-label">Incident Prediction Accuracy</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">-55%</div>
+                            <div class="metric-label">Lost Time Injury Rate</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">100%</div>
+                            <div class="metric-label">Regulatory Compliance</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Real-time hazard detection</div>
+                            <div class="capability-item">PPE compliance monitoring</div>
+                            <div class="capability-item">Near-miss analysis and trending</div>
+                            <div class="capability-item">Safety training personalization</div>
+                            <div class="capability-item">Regulatory compliance tracking</div>
+                            <div class="capability-item">Emergency response optimization</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transportation & Electronics Section -->
+        <div id="transportation" class="section">
+            <div class="section-intro">
+                <h2>🚗 Transportation & Electronics</h2>
+                <p>Address automotive demand challenges and semiconductor opportunities with 6 specialized AI agents (34.1% of revenue)</p>
+            </div>
+
+            <div class="agents-grid">
+                <!-- Agent 1: Automotive Materials Innovation -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">🚙</div>
+                        <div class="agent-title">
+                            <h3>Automotive Materials Innovation Agent</h3>
+                            <div class="problem">Addressing weakening automotive demand while accelerating EV materials</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">60%</div>
+                            <div class="metric-label">Faster Materials Discovery</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">45%</div>
+                            <div class="metric-label">R&D Cost Reduction</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">12</div>
+                            <div class="metric-label">New Products per Quarter</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">EV battery materials optimization</div>
+                            <div class="capability-item">Lightweight composites design</div>
+                            <div class="capability-item">Thermal management solutions</div>
+                            <div class="capability-item">Adhesives for electric drivetrains</div>
+                            <div class="capability-item">Acoustic dampening innovations</div>
+                            <div class="capability-item">Regulatory compliance prediction</div>
+                        </div>
+                    </div>
+
+                    <div class="demo-section">
+                        <div class="demo-header">
+                            <h4>🎯 Interactive Demo</h4>
+                        </div>
+                        <div class="demo-input">
+                            <label>Vehicle Type:</label>
+                            <select id="auto-type">
+                                <option>Electric Vehicle (EV)</option>
+                                <option>Hybrid Electric Vehicle</option>
+                                <option>Internal Combustion Engine</option>
+                                <option>Autonomous Vehicle Platform</option>
+                            </select>
+                        </div>
+                        <div class="demo-input">
+                            <label>Materials Challenge:</label>
+                            <select id="auto-challenge">
+                                <option>Battery Thermal Management</option>
+                                <option>Lightweight Structure</option>
+                                <option>Interior Acoustic Comfort</option>
+                                <option>Adhesive Bonding Strength</option>
+                            </select>
+                        </div>
+                        <button class="demo-button" onclick="runAutomotiveDemo()">
+                            Generate Materials Solution →
+                        </button>
+                        <div id="auto-result" class="demo-result"></div>
+                    </div>
+                </div>
+
+                <!-- Agent 2: Semiconductor Process Optimization -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">💾</div>
+                        <div class="agent-title">
+                            <h3>Semiconductor Process Optimization Agent</h3>
+                            <div class="problem">Capturing growth in data center and AI chip markets</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">52%</div>
+                            <div class="metric-label">Yield Improvement</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$180M</div>
+                            <div class="metric-label">Annual Value Created</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">8x</div>
+                            <div class="metric-label">Faster Process Development</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">CMP slurry optimization</div>
+                            <div class="capability-item">Thermal interface materials design</div>
+                            <div class="capability-item">Process parameter tuning</div>
+                            <div class="capability-item">Contamination detection and prevention</div>
+                            <div class="capability-item">Advanced packaging solutions</div>
+                            <div class="capability-item">Yield prediction and enhancement</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent 3: Electronics Display Innovation -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">📱</div>
+                        <div class="agent-title">
+                            <h3>Electronics Display Innovation Agent</h3>
+                            <div class="problem">Supporting next-gen display technologies and flexible electronics</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">38%</div>
+                            <div class="metric-label">Faster Prototyping</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">4x</div>
+                            <div class="metric-label">Patent Generation Rate</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$95M</div>
+                            <div class="metric-label">New Product Revenue (Annual)</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">OLED materials optimization</div>
+                            <div class="capability-item">Flexible substrate design</div>
+                            <div class="capability-item">Optical film innovations</div>
+                            <div class="capability-item">Touch sensor enhancements</div>
+                            <div class="capability-item">Durability testing acceleration</div>
+                            <div class="capability-item">Manufacturing process scaling</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consumer Products Section -->
+        <div id="consumer" class="section">
+            <div class="section-intro">
+                <h2>🏠 Consumer Products</h2>
+                <p>Accelerate innovation in home solutions, office products, and consumer safety with 4 specialized AI agents (20.1% of revenue)</p>
+            </div>
+
+            <div class="agents-grid">
+                <!-- Agent 1: Consumer Insights & Trend Prediction -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">🔍</div>
+                        <div class="agent-title">
+                            <h3>Consumer Insights & Trend Prediction Agent</h3>
+                            <div class="problem">Understanding evolving needs across Post-it®, Scotch®, and Command™ brands</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">85%</div>
+                            <div class="metric-label">Trend Prediction Accuracy</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">6mo</div>
+                            <div class="metric-label">Earlier Trend Identification</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">3.2x</div>
+                            <div class="metric-label">ROI on New Products</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Social media sentiment analysis</div>
+                            <div class="capability-item">Competitive landscape monitoring</div>
+                            <div class="capability-item">Consumer behavior prediction</div>
+                            <div class="capability-item">Product-market fit validation</div>
+                            <div class="capability-item">Pricing optimization</div>
+                            <div class="capability-item">Launch strategy recommendations</div>
+                        </div>
+                    </div>
+
+                    <div class="demo-section">
+                        <div class="demo-header">
+                            <h4>🎯 Interactive Demo</h4>
+                        </div>
+                        <div class="demo-input">
+                            <label>Product Category:</label>
+                            <select id="consumer-category">
+                                <option>Post-it® Notes & Sticky Products</option>
+                                <option>Scotch® Tape & Adhesives</option>
+                                <option>Command™ Hooks & Strips</option>
+                                <option>Scotch-Brite® Cleaning Products</option>
+                            </select>
+                        </div>
+                        <div class="demo-input">
+                            <label>Market Trend to Analyze:</label>
+                            <input type="text" id="consumer-trend" placeholder="e.g., Sustainable home organization">
+                        </div>
+                        <button class="demo-button" onclick="runConsumerDemo()">
+                            Analyze Trend & Generate Ideas →
+                        </button>
+                        <div id="consumer-result" class="demo-result"></div>
+                    </div>
+                </div>
+
+                <!-- Agent 2: Product Innovation Accelerator -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">💡</div>
+                        <div class="agent-title">
+                            <h3>Product Innovation Accelerator Agent</h3>
+                            <div class="problem">Launching 1,000 new products by 2027 across consumer categories</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">55%</div>
+                            <div class="metric-label">Faster Concept to Market</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">120+</div>
+                            <div class="metric-label">New Concepts per Quarter</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">68%</div>
+                            <div class="metric-label">Success Rate Improvement</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Idea generation from trends</div>
+                            <div class="capability-item">Feasibility analysis automation</div>
+                            <div class="capability-item">Cross-category innovation discovery</div>
+                            <div class="capability-item">Rapid prototyping guidance</div>
+                            <div class="capability-item">Patent landscape analysis</div>
+                            <div class="capability-item">Go-to-market strategy creation</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent 3: Home Improvement Solutions -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">🏡</div>
+                        <div class="agent-title">
+                            <h3>Home Improvement Solutions Agent</h3>
+                            <div class="problem">Expanding Command™ brand and DIY solutions market share</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">42%</div>
+                            <div class="metric-label">Market Share Growth</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$220M</div>
+                            <div class="metric-label">Incremental Revenue</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">4.5★</div>
+                            <div class="metric-label">Customer Rating Average</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">DIY project trend analysis</div>
+                            <div class="capability-item">Adhesive performance optimization</div>
+                            <div class="capability-item">Surface compatibility testing</div>
+                            <div class="capability-item">Installation guide automation</div>
+                            <div class="capability-item">Customer education content</div>
+                            <div class="capability-item">Retail partner collaboration</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Innovation & R&D Section -->
+        <div id="innovation" class="section">
+            <div class="section-intro">
+                <h2>🔬 Innovation & R&D</h2>
+                <p>Accelerate the $3.5B R&D investment and 1,000-product launch goal with 6 specialized AI agents for materials science, testing, and commercialization</p>
+            </div>
+
+            <div class="agents-grid">
+                <!-- Agent 1: PIMLAD Enhancement Agent -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">🧬</div>
+                        <div class="agent-title">
+                            <h3>PIMLAD Enhancement Agent</h3>
+                            <div class="problem">Accelerating Physics-Informed Machine Learning & Accelerated Design</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">10x</div>
+                            <div class="metric-label">Materials Discovery Speed</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$85M</div>
+                            <div class="metric-label">R&D Cost Savings (Annual)</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">92%</div>
+                            <div class="metric-label">Prediction Accuracy</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Physics-based AI modeling</div>
+                            <div class="capability-item">Molecular structure optimization</div>
+                            <div class="capability-item">Performance prediction simulation</div>
+                            <div class="capability-item">Multi-property optimization</div>
+                            <div class="capability-item">Experimental design automation</div>
+                            <div class="capability-item">Knowledge graph integration</div>
+                        </div>
+                    </div>
+
+                    <div class="demo-section">
+                        <div class="demo-header">
+                            <h4>🎯 Interactive Demo</h4>
+                        </div>
+                        <div class="demo-input">
+                            <label>Material Category:</label>
+                            <select id="pimlad-category">
+                                <option>Advanced Adhesives</option>
+                                <option>High-Performance Abrasives</option>
+                                <option>Specialty Coatings</option>
+                                <option>Composite Materials</option>
+                            </select>
+                        </div>
+                        <div class="demo-input">
+                            <label>Target Properties:</label>
+                            <textarea id="pimlad-properties" placeholder="e.g., High tensile strength, low weight, temperature resistant up to 300°C, biocompatible"></textarea>
+                        </div>
+                        <button class="demo-button" onclick="runPIMLADDemo()">
+                            Generate Material Candidates →
+                        </button>
+                        <div id="pimlad-result" class="demo-result"></div>
+                    </div>
+                </div>
+
+                <!-- Agent 2: Digital Materials Hub Intelligence -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">🗂️</div>
+                        <div class="agent-title">
+                            <h3>Digital Materials Hub Intelligence Agent</h3>
+                            <div class="problem">Scaling 300+ product model combinations across 60,000+ products</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">300+</div>
+                            <div class="metric-label">Product Model Combinations</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">75%</div>
+                            <div class="metric-label">Testing Time Reduction</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$120M</div>
+                            <div class="metric-label">Annual Lab Cost Savings</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Performance prediction from specs</div>
+                            <div class="capability-item">Material substitution analysis</div>
+                            <div class="capability-item">Cost-performance optimization</div>
+                            <div class="capability-item">Regulatory compliance checking</div>
+                            <div class="capability-item">Sustainability impact assessment</div>
+                            <div class="capability-item">Cross-portfolio learning</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent 3: Research Collaboration & Knowledge Management -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">🤝</div>
+                        <div class="agent-title">
+                            <h3>Research Collaboration & Knowledge Agent</h3>
+                            <div class="problem">Addressing data scientist talent shortage and scaling expertise</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">5x</div>
+                            <div class="metric-label">Researcher Productivity</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">88%</div>
+                            <div class="metric-label">Knowledge Reuse Rate</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">200+</div>
+                            <div class="metric-label">Patents per Year</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Literature review automation</div>
+                            <div class="capability-item">Expert matching and collaboration</div>
+                            <div class="capability-item">Institutional knowledge capture</div>
+                            <div class="capability-item">Patent landscape analysis</div>
+                            <div class="capability-item">Research proposal generation</div>
+                            <div class="capability-item">Cross-functional team coordination</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent 4: Accelerated Testing & Validation -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">⚗️</div>
+                        <div class="agent-title">
+                            <h3>Accelerated Testing & Validation Agent</h3>
+                            <div class="problem">Reducing time-to-market for 1,000 new products</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">62%</div>
+                            <div class="metric-label">Testing Time Reduction</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$75M</div>
+                            <div class="metric-label">Annual Testing Cost Savings</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">4x</div>
+                            <div class="metric-label">Validation Throughput</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Test protocol optimization</div>
+                            <div class="capability-item">Accelerated life testing design</div>
+                            <div class="capability-item">Statistical analysis automation</div>
+                            <div class="capability-item">Failure mode prediction</div>
+                            <div class="capability-item">Regulatory test mapping</div>
+                            <div class="capability-item">Quality assurance documentation</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent 5: Sustainability & ESG Innovation -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">🌱</div>
+                        <div class="agent-title">
+                            <h3>Sustainability & ESG Innovation Agent</h3>
+                            <div class="problem">Meeting carbon, water, and plastics reduction goals</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">45%</div>
+                            <div class="metric-label">Carbon Footprint Reduction</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$95M</div>
+                            <div class="metric-label">Sustainability ROI</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">100%</div>
+                            <div class="metric-label">ESG Reporting Automation</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Lifecycle assessment automation</div>
+                            <div class="capability-item">Circular economy design principles</div>
+                            <div class="capability-item">Bio-based materials discovery</div>
+                            <div class="capability-item">Waste reduction optimization</div>
+                            <div class="capability-item">Carbon accounting and tracking</div>
+                            <div class="capability-item">ESG compliance reporting</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent 6: Cubitron Evolution AI -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">✨</div>
+                        <div class="agent-title">
+                            <h3>Next-Gen Product Evolution Agent (Cubitron™ Model)</h3>
+                            <div class="problem">Replicating AI-driven success of Cubitron™ 3 across portfolio</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">250+</div>
+                            <div class="metric-label">Product Evolution Projects</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">3.5x</div>
+                            <div class="metric-label">Performance Improvement Average</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$380M</div>
+                            <div class="metric-label">New Revenue from Upgrades</div>
+                        </div>
+                    </div>
+
+                    <div class="capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capabilities-list">
+                            <div class="capability-item">Shape and geometry optimization</div>
+                            <div class="capability-item">Multi-physics performance modeling</div>
+                            <div class="capability-item">Manufacturing feasibility analysis</div>
+                            <div class="capability-item">Competitive benchmarking</div>
+                            <div class="capability-item">Product roadmap generation</div>
+                            <div class="capability-item">Market positioning strategy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Anthropic Section -->
+        <div id="why-anthropic" class="section">
+            <div class="enterprise-section">
+                <h2>🛡️ Why Anthropic for 3M</h2>
+                <div class="subtitle">The most trusted AI partner for science-driven innovation at enterprise scale</div>
+
+                <div style="margin: 3rem 0;">
+                    <h3 style="font-size: 2rem; margin-bottom: 1.5rem;">Strategic Alignment with 3M's Priorities</h3>
+
+                    <div class="use-cases">
+                        <div class="use-case">
+                            <h4>🔬 Materials Science Excellence</h4>
+                            <p style="color: #666; margin-bottom: 1rem;">
+                                Claude Sonnet 4.5 excels at complex scientific reasoning, making it ideal for PIMLAD enhancement, materials discovery, and physics-informed AI applications.
+                            </p>
+                            <ul>
+                                <li>Advanced reasoning for multi-property optimization</li>
+                                <li>Chemistry and physics domain knowledge</li>
+                                <li>Technical documentation generation</li>
+                                <li>Patent analysis and IP strategy</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>⚡ Unmatched Speed & Accuracy</h4>
+                            <p style="color: #666; margin-bottom: 1rem;">
+                                2x faster than GPT-5 with best-in-class accuracy on GPQA Diamond (65.9%), critical for accelerating the 1,000-product launch timeline.
+                            </p>
+                            <ul>
+                                <li>Rapid iteration on product concepts</li>
+                                <li>Real-time manufacturing optimization</li>
+                                <li>Low-latency quality control</li>
+                                <li>Faster time-to-market for innovations</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>🎯 Extended Thinking for Complex Problems</h4>
+                            <p style="color: #666; margin-bottom: 1rem;">
+                                Extended Thinking feature enables deep reasoning for complex R&D challenges, multi-variable optimization, and strategic planning.
+                            </p>
+                            <ul>
+                                <li>Multi-step materials design</li>
+                                <li>Supply chain scenario modeling</li>
+                                <li>Long-term sustainability planning</li>
+                                <li>Cross-functional innovation strategy</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>🏢 Enterprise-Grade Security</h4>
+                            <p style="color: #666; margin-bottom: 1rem;">
+                                SOC 2 Type II, HIPAA compliant, and zero data retention policy protect 3M's valuable IP and proprietary formulations.
+                            </p>
+                            <ul>
+                                <li>Proprietary materials data protection</li>
+                                <li>Patent-pending formulation security</li>
+                                <li>Compliance with industry regulations</li>
+                                <li>Customer confidentiality assurance</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>📊 Massive Context for Portfolio Scale</h4>
+                            <p style="color: #666; margin-bottom: 1rem;">
+                                1M token context window enables understanding of 3M's vast product portfolio, technical specifications, and cross-category insights.
+                            </p>
+                            <ul>
+                                <li>60,000+ product knowledge integration</li>
+                                <li>Cross-category innovation discovery</li>
+                                <li>Complete technical document analysis</li>
+                                <li>Comprehensive regulatory documentation</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>🤖 Agentic AI for Autonomous Operations</h4>
+                            <p style="color: #666; margin-bottom: 1rem;">
+                                Computer Use and tool integration enable AI agents that autonomously optimize manufacturing, conduct research, and accelerate development.
+                            </p>
+                            <ul>
+                                <li>Autonomous manufacturing optimization</li>
+                                <li>Self-directed research exploration</li>
+                                <li>Integrated lab equipment control</li>
+                                <li>End-to-end workflow automation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0;">Claude Sonnet 4.5 Competitive Advantages</h3>
+
+                    <div class="enterprise-metrics">
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">65.9%</div>
+                            <div class="enterprise-metric-label">GPQA Diamond (vs GPT-5's 60.4%)</div>
+                        </div>
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">2x</div>
+                            <div class="enterprise-metric-label">Faster than GPT-5</div>
+                        </div>
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">1M</div>
+                            <div class="enterprise-metric-label">Token Context Window</div>
+                        </div>
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">Zero</div>
+                            <div class="enterprise-metric-label">Data Retention</div>
+                        </div>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 2.5rem; border-radius: 12px; margin-top: 3rem;">
+                        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Proven Impact in Materials & Manufacturing</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
+                            <div>
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem;">Materials Discovery</h4>
+                                <p style="color: #666; line-height: 1.8;">
+                                    Leading materials companies use Claude to accelerate discovery by 10x, reduce R&D costs by 40%, and predict material properties with 90%+ accuracy
+                                </p>
+                            </div>
+                            <div>
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem;">Manufacturing Optimization</h4>
+                                <p style="color: #666; line-height: 1.8;">
+                                    Industrial leaders achieve 30-50% defect reduction, 25% energy savings, and $100M+ annual value through Claude-powered automation
+                                </p>
+                            </div>
+                            <div>
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem;">Product Development Speed</h4>
+                                <p style="color: #666; line-height: 1.8;">
+                                    Consumer goods companies reduce time-to-market by 60%, increase product success rates by 3x, and launch 5x more innovations per year
+                                </p>
+                            </div>
+                            <div>
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem;">Enterprise Deployment</h4>
+                                <p style="color: #666; line-height: 1.8;">
+                                    Fortune 500 companies deploy Claude across 50+ use cases, achieving 200%+ ROI in first year with enterprise-grade security and compliance
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Claude Code Section -->
+        <div id="claude-code" class="section">
+            <div class="enterprise-section">
+                <h2>💻 Claude Code for 3M Development Teams</h2>
+                <div class="subtitle">Accelerate software development for Digital Materials Hub, manufacturing systems, and product innovation tools</div>
+
+                <div style="margin: 3rem 0;">
+                    <h3 style="font-size: 2rem; margin-bottom: 1.5rem;">Strategic Value for 3M Engineering</h3>
+
+                    <div class="use-cases">
+                        <div class="use-case">
+                            <h4>🗂️ Digital Materials Hub Development</h4>
+                            <ul>
+                                <li>Rapid development of 300+ product models</li>
+                                <li>AI-powered materials database integration</li>
+                                <li>Performance prediction algorithm optimization</li>
+                                <li>API development for cross-platform access</li>
+                                <li>Data visualization and analytics dashboards</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>🏭 Manufacturing Systems & IoT</h4>
+                            <ul>
+                                <li>Factory automation system development</li>
+                                <li>Real-time quality control software</li>
+                                <li>Predictive maintenance applications</li>
+                                <li>IoT sensor data processing pipelines</li>
+                                <li>Production line optimization algorithms</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>🔬 R&D Software Tools</h4>
+                            <ul>
+                                <li>PIMLAD algorithm enhancement</li>
+                                <li>Materials simulation software</li>
+                                <li>Laboratory data management systems</li>
+                                <li>Experimental design automation tools</li>
+                                <li>Research collaboration platforms</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>📊 Data Science & Analytics</h4>
+                            <ul>
+                                <li>Machine learning model development</li>
+                                <li>Supply chain optimization algorithms</li>
+                                <li>Customer insights analytics platforms</li>
+                                <li>Sustainability tracking dashboards</li>
+                                <li>Financial modeling and forecasting tools</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0;">Developer Productivity Gains</h3>
+
+                    <div class="enterprise-metrics">
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">60%</div>
+                            <div class="enterprise-metric-label">Faster Development Cycles</div>
+                        </div>
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">85%</div>
+                            <div class="enterprise-metric-label">Code Quality Improvement</div>
+                        </div>
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">$8M</div>
+                            <div class="enterprise-metric-label">Annual Savings per 100 Developers</div>
+                        </div>
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">3x</div>
+                            <div class="enterprise-metric-label">Feature Delivery Velocity</div>
+                        </div>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 2.5rem; border-radius: 12px; border: 2px solid #FF0000; margin-top: 3rem;">
+                        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: #2c2c2c;">Key Features for 3M Engineering Teams</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                            <div style="padding: 1.5rem; background: white; border-radius: 8px;">
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem;">🧠 Agentic Coding</h4>
+                                <p style="color: #666; line-height: 1.8; font-size: 0.95rem;">
+                                    Autonomous agents plan, implement, test, and debug complex features end-to-end with minimal guidance
+                                </p>
+                            </div>
+                            <div style="padding: 1.5rem; background: white; border-radius: 8px;">
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem;">🔍 Deep Codebase Understanding</h4>
+                                <p style="color: #666; line-height: 1.8; font-size: 0.95rem;">
+                                    1M token context enables comprehension of entire applications, legacy systems, and architectural patterns
+                                </p>
+                            </div>
+                            <div style="padding: 1.5rem; background: white; border-radius: 8px;">
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem;">🛠️ Multi-Language Mastery</h4>
+                                <p style="color: #666; line-height: 1.8; font-size: 0.95rem;">
+                                    Expert support for Python, Java, C++, JavaScript, MATLAB, and specialized scientific computing languages
+                                </p>
+                            </div>
+                            <div style="padding: 1.5rem; background: white; border-radius: 8px;">
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem;">🔐 Enterprise Integration</h4>
+                                <p style="color: #666; line-height: 1.8; font-size: 0.95rem;">
+                                    Seamless integration with GitHub, GitLab, CI/CD pipelines, and 3M's development infrastructure
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 3rem; padding: 2rem; background: #2c2c2c; color: white; border-radius: 12px; text-align: center;">
+                        <h3 style="color: white; font-size: 1.8rem; margin-bottom: 1rem;">Accelerate Your 1,000-Product Mission</h3>
+                        <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 1.5rem;">
+                            Claude Code empowers 3M developers to build the software infrastructure needed to launch 1,000 new products by 2027
+                        </p>
+                        <div style="display: inline-block; padding: 1rem 2rem; background: #FF0000; border-radius: 8px; font-weight: 600; font-size: 1.1rem;">
+                            Get Started with Claude Code →
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enterprise Section -->
+        <div id="enterprise" class="section">
+            <div class="enterprise-section">
+                <h2>🌐 Claude for Enterprise: Transforming 3M at Scale</h2>
+                <div class="subtitle">Deploy AI across research, manufacturing, product development, and commercial operations</div>
+
+                <div style="margin: 3rem 0;">
+                    <h3 style="font-size: 2rem; margin-bottom: 1.5rem;">Enterprise Deployment Framework</h3>
+
+                    <div class="use-cases">
+                        <div class="use-case">
+                            <h4>🔬 Research & Development</h4>
+                            <ul>
+                                <li>Materials scientists use Claude for literature review and hypothesis generation</li>
+                                <li>PIMLAD agents accelerate molecular design and property prediction</li>
+                                <li>Digital Materials Hub leverages Claude for performance modeling</li>
+                                <li>Patent attorneys use AI for IP strategy and landscape analysis</li>
+                                <li>Sustainability teams model environmental impacts of formulations</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>🏭 Manufacturing & Operations</h4>
+                            <ul>
+                                <li>Plant managers optimize production schedules and resource allocation</li>
+                                <li>Quality engineers deploy computer vision for defect detection</li>
+                                <li>Maintenance teams use predictive AI to prevent equipment failures</li>
+                                <li>Supply chain analysts forecast demand and optimize inventory</li>
+                                <li>EHS teams monitor safety compliance and incident prevention</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>💼 Commercial & Marketing</h4>
+                            <ul>
+                                <li>Product managers analyze consumer trends and market opportunities</li>
+                                <li>Marketing teams generate personalized content and campaigns</li>
+                                <li>Sales engineers create custom technical proposals instantly</li>
+                                <li>Customer service agents resolve inquiries with AI-powered insights</li>
+                                <li>Pricing analysts optimize strategies across 60,000+ products</li>
+                            </ul>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>💻 Engineering & IT</h4>
+                            <ul>
+                                <li>Software developers use Claude Code for rapid application development</li>
+                                <li>Data scientists build ML models and analytics pipelines faster</li>
+                                <li>IT support teams automate troubleshooting and documentation</li>
+                                <li>Security analysts detect threats and vulnerabilities proactively</li>
+                                <li>Infrastructure teams optimize cloud resources and costs</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0;">Enterprise ROI Projections</h3>
+
+                    <div class="enterprise-metrics">
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">$450M</div>
+                            <div class="enterprise-metric-label">Annual Productivity Gains</div>
+                        </div>
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">$280M</div>
+                            <div class="enterprise-metric-label">R&D Cost Savings</div>
+                        </div>
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">$180M</div>
+                            <div class="enterprise-metric-label">Manufacturing Optimization</div>
+                        </div>
+                        <div class="enterprise-metric">
+                            <div class="enterprise-metric-value">$320M</div>
+                            <div class="enterprise-metric-label">Accelerated Revenue from New Products</div>
+                        </div>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%); padding: 3rem; border-radius: 12px; color: white; margin-top: 3rem;">
+                        <h3 style="color: white; font-size: 2rem; margin-bottom: 1.5rem;">Implementation Roadmap</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+                            <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 8px; backdrop-filter: blur(10px);">
+                                <h4 style="color: white; margin-bottom: 0.75rem; font-size: 1.3rem;">Phase 1: R&D Pilot</h4>
+                                <p style="font-size: 0.95rem; line-height: 1.7;">
+                                    Deploy 6 PIMLAD and Digital Materials Hub agents with materials science teams (Months 1-3)
+                                </p>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 8px; backdrop-filter: blur(10px);">
+                                <h4 style="color: white; margin-bottom: 0.75rem; font-size: 1.3rem;">Phase 2: Manufacturing Scale</h4>
+                                <p style="font-size: 0.95rem; line-height: 1.7;">
+                                    Roll out 8 automation and quality agents across top 20 production facilities (Months 4-6)
+                                </p>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 8px; backdrop-filter: blur(10px);">
+                                <h4 style="color: white; margin-bottom: 0.75rem; font-size: 1.3rem;">Phase 3: Enterprise-Wide</h4>
+                                <p style="font-size: 0.95rem; line-height: 1.7;">
+                                    Deploy all 24 agents globally across R&D, manufacturing, commercial functions (Months 7-12)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 3rem; padding: 2.5rem; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: #2c2c2c;">Enterprise Success Metrics</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
+                            <div>
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem; font-size: 1.2rem;">🎯 Product Launch Velocity</h4>
+                                <p style="color: #666; line-height: 1.8;">
+                                    <strong>Target:</strong> 60% reduction in time-to-market, enabling the 1,000-product goal by 2027 with capacity to spare
+                                </p>
+                            </div>
+                            <div>
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem; font-size: 1.2rem;">💰 R&D Efficiency</h4>
+                                <p style="color: #666; line-height: 1.8;">
+                                    <strong>Target:</strong> $280M annual savings from $3.5B investment (8% efficiency gain) through AI-accelerated discovery
+                                </p>
+                            </div>
+                            <div>
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem; font-size: 1.2rem;">⚙️ Manufacturing Performance</h4>
+                                <p style="color: #666; line-height: 1.8;">
+                                    <strong>Target:</strong> $300M cost savings achieved, 35% defect reduction, 40% improvement in OEE across facilities
+                                </p>
+                            </div>
+                            <div>
+                                <h4 style="color: #FF0000; margin-bottom: 0.75rem; font-size: 1.2rem;">📈 Revenue Impact</h4>
+                                <p style="color: #666; line-height: 1.8;">
+                                    <strong>Target:</strong> $320M incremental revenue from faster product launches and improved commercial effectiveness
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 2.5rem; border-radius: 12px; border-left: 4px solid #FF0000; margin-top: 3rem;">
+                        <h3 style="font-size: 1.8rem; margin-bottom: 1rem; color: #2c2c2c;">Why 3M and Anthropic are the Perfect Partnership</h3>
+                        <p style="font-size: 1.1rem; color: #555; line-height: 1.9; margin-bottom: 1.5rem;">
+                            3M's legacy of innovation meets Anthropic's frontier AI capabilities. Together, we're accelerating the science that solves real-world problems — from materials discovery to manufacturing excellence to bringing breakthrough products to market faster than ever before.
+                        </p>
+                        <p style="font-size: 1.1rem; color: #555; line-height: 1.9;">
+                            With Claude powering 3M's 1,000-product mission, we're not just automating tasks — we're amplifying human ingenuity, accelerating discovery, and creating the future of science applied to life.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Powered by Claude Sonnet 4.5 | Science Applied to Life™ | © 2025 3M Company & Anthropic</p>
+        <p style="font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.8;">3M, Post-it, Scotch, Command, Scotch-Brite, and Cubitron are trademarks of 3M Company.</p>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Demo Functions
+        function runManufacturingDemo() {
+            const line = document.getElementById('mfg-line').value;
+            const goal = document.getElementById('mfg-goal').value;
+            const resultDiv = document.getElementById('mfg-result');
+
+            // Simulate processing
+            resultDiv.innerHTML = `
+                <div class="result-title">🤖 Optimization Analysis Complete</div>
+                <div class="result-content">
+                    <strong>Production Line:</strong> ${line}<br>
+                    <strong>Optimization Goal:</strong> ${goal}<br><br>
+
+                    <strong>AI Recommendations:</strong><br>
+                    • Adjust temperature profile to reduce cycle time by 18%<br>
+                    • Implement predictive maintenance on Station 7 (failure risk: 72%)<br>
+                    • Optimize material flow to improve first-pass yield by 24%<br>
+                    • Reduce energy consumption during cure phase by 31%<br><br>
+
+                    <strong>Projected Impact:</strong><br>
+                    Implementation of these changes will save $2.8M annually and increase throughput by 22%.
+                </div>
+                <div class="result-metrics">
+                    <div class="result-metric">
+                        <div class="result-metric-value">18%</div>
+                        <div class="result-metric-label">Cycle Time Reduction</div>
+                    </div>
+                    <div class="result-metric">
+                        <div class="result-metric-value">24%</div>
+                        <div class="result-metric-label">Yield Improvement</div>
+                    </div>
+                    <div class="result-metric">
+                        <div class="result-metric-value">$2.8M</div>
+                        <div class="result-metric-label">Annual Savings</div>
+                    </div>
+                </div>
+            `;
+            resultDiv.classList.add('show');
+        }
+
+        function runAutomotiveDemo() {
+            const type = document.getElementById('auto-type').value;
+            const challenge = document.getElementById('auto-challenge').value;
+            const resultDiv = document.getElementById('auto-result');
+
+            resultDiv.innerHTML = `
+                <div class="result-title">🚙 Materials Solution Generated</div>
+                <div class="result-content">
+                    <strong>Vehicle Type:</strong> ${type}<br>
+                    <strong>Challenge:</strong> ${challenge}<br><br>
+
+                    <strong>AI-Designed Solution:</strong><br>
+                    • Material: Advanced polymer composite with embedded phase-change materials<br>
+                    • Properties: 40% weight reduction, thermal conductivity optimized for battery cooling<br>
+                    • Manufacturing: Compatible with existing adhesive bonding processes<br>
+                    • Sustainability: 65% bio-based content, fully recyclable<br><br>
+
+                    <strong>Next Steps:</strong><br>
+                    Small-scale synthesis completed. Lab testing scheduled for next week.
+                </div>
+                <div class="result-metrics">
+                    <div class="result-metric">
+                        <div class="result-metric-value">40%</div>
+                        <div class="result-metric-label">Weight Reduction</div>
+                    </div>
+                    <div class="result-metric">
+                        <div class="result-metric-value">65%</div>
+                        <div class="result-metric-label">Bio-Based Content</div>
+                    </div>
+                    <div class="result-metric">
+                        <div class="result-metric-value">3 wks</div>
+                        <div class="result-metric-label">To Prototype</div>
+                    </div>
+                </div>
+            `;
+            resultDiv.classList.add('show');
+        }
+
+        function runConsumerDemo() {
+            const category = document.getElementById('consumer-category').value;
+            const trend = document.getElementById('consumer-trend').value;
+            const resultDiv = document.getElementById('consumer-result');
+
+            resultDiv.innerHTML = `
+                <div class="result-title">🔍 Trend Analysis & Product Ideas</div>
+                <div class="result-content">
+                    <strong>Category:</strong> ${category}<br>
+                    <strong>Trend:</strong> ${trend}<br><br>
+
+                    <strong>Market Opportunity:</strong><br>
+                    • Market size: $2.4B and growing 18% annually<br>
+                    • 3M current share: 12% with opportunity to reach 25%<br>
+                    • Consumer sentiment: 87% positive for sustainable solutions<br><br>
+
+                    <strong>AI-Generated Product Concepts:</strong><br>
+                    1. <strong>Eco Command™ Hooks:</strong> Plant-based adhesive, holds 5 lbs, 100% compostable<br>
+                    2. <strong>Modular Organization System:</strong> Reconfigurable Command™ strips for custom storage<br>
+                    3. <strong>Smart Surface Strips:</strong> NFC-enabled hooks for inventory tracking<br><br>
+
+                    <strong>Recommended Launch Strategy:</strong> Q3 2026 with sustainability-focused marketing campaign
+                </div>
+                <div class="result-metrics">
+                    <div class="result-metric">
+                        <div class="result-metric-value">$480M</div>
+                        <div class="result-metric-label">Revenue Opportunity</div>
+                    </div>
+                    <div class="result-metric">
+                        <div class="result-metric-value">3</div>
+                        <div class="result-metric-label">Product Concepts</div>
+                    </div>
+                    <div class="result-metric">
+                        <div class="result-metric-value">3.2x</div>
+                        <div class="result-metric-label">Projected ROI</div>
+                    </div>
+                </div>
+            `;
+            resultDiv.classList.add('show');
+        }
+
+        function runPIMLADDemo() {
+            const category = document.getElementById('pimlad-category').value;
+            const properties = document.getElementById('pimlad-properties').value;
+            const resultDiv = document.getElementById('pimlad-result');
+
+            resultDiv.innerHTML = `
+                <div class="result-title">🧬 PIMLAD Materials Discovery Complete</div>
+                <div class="result-content">
+                    <strong>Category:</strong> ${category}<br>
+                    <strong>Target Properties:</strong> ${properties}<br><br>
+
+                    <strong>AI-Discovered Candidates:</strong><br>
+                    1. <strong>Candidate A:</strong> Novel crosslinked polyurethane with ceramic nanoparticles<br>
+                       - Predicted tensile strength: 95 MPa<br>
+                       - Temperature stability: up to 320°C<br>
+                       - Synthesis complexity: Medium<br><br>
+
+                    2. <strong>Candidate B:</strong> Bio-based epoxy with carbon fiber reinforcement<br>
+                       - Predicted tensile strength: 112 MPa<br>
+                       - Temperature stability: up to 285°C<br>
+                       - Synthesis complexity: Low<br><br>
+
+                    <strong>Recommendation:</strong> Begin with Candidate B for faster time-to-market and sustainability benefits.
+                </div>
+                <div class="result-metrics">
+                    <div class="result-metric">
+                        <div class="result-metric-value">2</div>
+                        <div class="result-metric-label">Top Candidates</div>
+                    </div>
+                    <div class="result-metric">
+                        <div class="result-metric-value">92%</div>
+                        <div class="result-metric-label">Prediction Confidence</div>
+                    </div>
+                    <div class="result-metric">
+                        <div class="result-metric-value">4 wks</div>
+                        <div class="result-metric-label">To Lab Validation</div>
+                    </div>
+                </div>
+            `;
+            resultDiv.classList.add('show');
+        }
+    </script>
+</body>
+</html>
