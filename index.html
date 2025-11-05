@@ -78,23 +78,24 @@
             max-width: 1400px;
             margin: 0 auto;
             display: flex;
-            overflow-x: auto;
+            flex-wrap: wrap;
             gap: 0;
         }
 
         .tab {
-            flex: 1;
-            min-width: 180px;
-            padding: 1.2rem 1.5rem;
+            flex: 1 1 auto;
+            min-width: 140px;
+            padding: 1.2rem 1rem;
             background: white;
             border: none;
             border-bottom: 3px solid transparent;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: #555;
             transition: all 0.3s ease;
             text-align: center;
+            white-space: nowrap;
         }
 
         .tab:hover {
@@ -546,6 +547,13 @@
             margin: 2rem 0;
         }
 
+        .use-cases-three {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
         .use-case {
             padding: 1.5rem;
             background: #f8f9fa;
@@ -688,7 +696,7 @@
                 padding: 2rem 1.5rem;
             }
 
-            .use-cases {
+            .use-cases, .use-cases-three {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
@@ -814,14 +822,14 @@
             <button class="tab" onclick="showSection('innovation')">
                 🔬 Innovation & R&D
             </button>
-            <button class="tab" onclick="showSection('why-anthropic')">
-                🛡️ Why Anthropic
-            </button>
             <button class="tab" onclick="showSection('claude-code')">
                 💻 Development Acceleration
             </button>
             <button class="tab" onclick="showSection('enterprise')">
                 🌐 Claude for Enterprise
+            </button>
+            <button class="tab" onclick="showSection('why-anthropic')">
+                🛡️ Why Anthropic
             </button>
         </div>
     </div>
@@ -857,7 +865,7 @@
 
                 <h3 style="font-size: 2rem; margin: 3rem 0 1.5rem 0;">Three Strategic Priorities</h3>
 
-                <div class="use-cases">
+                <div class="use-cases-three">
                     <div class="use-case">
                         <h4>📈 Reinvigorate Top-Line Growth</h4>
                         <p style="color: #666; margin-bottom: 1rem; line-height: 1.7;">
