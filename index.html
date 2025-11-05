@@ -162,12 +162,139 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            cursor: pointer;
+            position: relative;
         }
 
         .agent-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 24px rgba(255, 0, 0, 0.15);
             border-color: #FF0000;
+        }
+
+        .agent-card::after {
+            content: '👆 Click to see in action';
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .agent-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Demo Modal */
+        .demo-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .demo-modal.active {
+            display: flex;
+        }
+
+        .demo-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .demo-modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #f0f0f0;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .demo-modal-close:hover {
+            background: #FF0000;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .demo-live-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .demo-thinking {
+            display: inline-block;
+            color: #666;
+            font-style: italic;
+            margin: 1rem 0;
+        }
+
+        .demo-thinking::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
         }
 
         .agent-header {
@@ -952,7 +1079,7 @@
                 </div>
 
                 <!-- Agent 2: Quality Control Vision AI -->
-                <div class="agent-card">
+                <div class="agent-card" onclick="showAgentDemo('quality-vision')">
                     <div class="agent-header">
                         <div class="agent-icon">👁️</div>
                         <div class="agent-title">
@@ -1228,7 +1355,7 @@
 
             <div class="agents-grid">
                 <!-- Agent 1: Consumer Insights & Trend Prediction -->
-                <div class="agent-card">
+                <div class="agent-card" onclick="showAgentDemo('consumer-insights')">
                     <div class="agent-header">
                         <div class="agent-icon">🔍</div>
                         <div class="agent-title">
@@ -1375,7 +1502,7 @@
 
             <div class="agents-grid">
                 <!-- Agent 1: PIMLAD Enhancement Agent -->
-                <div class="agent-card">
+                <div class="agent-card" onclick="showAgentDemo('pimlad')">
                     <div class="agent-header">
                         <div class="agent-icon">🧬</div>
                         <div class="agent-title">
@@ -2860,6 +2987,281 @@
                 directBtn.style.border = '2px solid rgba(255,255,255,0.5)';
             }
         }
+        // Agent Demo Modal Functions
+        function showAgentDemo(agentType) {
+            const modal = document.getElementById('demoModal');
+            const content = document.getElementById('demoModalContent');
+
+            modal.classList.add('active');
+
+            // Populate with specific agent demo
+            const demos = {
+                'pimlad': {
+                    icon: '🧬',
+                    title: 'PIMLAD Enhancement Agent',
+                    subtitle: 'Live Demo: Accelerating Materials Discovery',
+                    content: `
+                        <div class="demo-live-badge">🔴 LIVE DEMO</div>
+                        <h3 style="font-size: 1.5rem; color: #2c2c2c; margin-bottom: 1rem;">Finding Next-Generation Adhesive Materials</h3>
+
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #FF0000; margin: 1.5rem 0;">
+                            <strong style="color: #2c2c2c;">User Prompt:</strong>
+                            <p style="margin-top: 0.5rem; color: #555;">"Find materials with adhesive strength > 50N, temperature resistance > 150°C, and bio-based content > 60% for our new sustainable Post-it line"</p>
+                        </div>
+
+                        <div class="demo-thinking">🤖 PIMLAD Agent analyzing 60,000+ materials database</div>
+
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid #00ff88; margin: 1.5rem 0;">
+                            <h4 style="color: #00cc6a; margin-bottom: 1rem;">✅ Analysis Complete - 3 Candidates Found</h4>
+
+                            <div style="background: #f0f9ff; padding: 1.25rem; border-radius: 6px; margin-bottom: 1rem; border-left: 3px solid #0066cc;">
+                                <h5 style="color: #0066cc; margin-bottom: 0.5rem;">Candidate 1: Bio-Polyurethane Composite</h5>
+                                <p style="font-size: 0.9rem; color: #555; line-height: 1.7;">
+                                    <strong>Adhesive Strength:</strong> 62N (24% above target)<br>
+                                    <strong>Temperature Resistance:</strong> 165°C<br>
+                                    <strong>Bio-Based Content:</strong> 68% (corn starch + soybean oil)<br>
+                                    <strong>Estimated R&D Time:</strong> 8 weeks<br>
+                                    <strong>Cost Multiplier:</strong> 1.2x current materials
+                                </p>
+                            </div>
+
+                            <div style="background: #f0f9ff; padding: 1.25rem; border-radius: 6px; margin-bottom: 1rem; border-left: 3px solid #0066cc;">
+                                <h5 style="color: #0066cc; margin-bottom: 0.5rem;">Candidate 2: Modified Cellulose Acetate</h5>
+                                <p style="font-size: 0.9rem; color: #555; line-height: 1.7;">
+                                    <strong>Adhesive Strength:</strong> 58N (16% above target)<br>
+                                    <strong>Temperature Resistance:</strong> 172°C<br>
+                                    <strong>Bio-Based Content:</strong> 82% (wood pulp derivatives)<br>
+                                    <strong>Estimated R&D Time:</strong> 6 weeks<br>
+                                    <strong>Cost Multiplier:</strong> 1.4x current materials
+                                </p>
+                            </div>
+
+                            <div style="background: #f0f9ff; padding: 1.25rem; border-radius: 6px; border-left: 3px solid #0066cc;">
+                                <h5 style="color: #0066cc; margin-bottom: 0.5rem;">Candidate 3: Algae-Based Polymer Blend</h5>
+                                <p style="font-size: 0.9rem; color: #555; line-height: 1.7;">
+                                    <strong>Adhesive Strength:</strong> 54N (8% above target)<br>
+                                    <strong>Temperature Resistance:</strong> 158°C<br>
+                                    <strong>Bio-Based Content:</strong> 95% (marine algae extract)<br>
+                                    <strong>Estimated R&D Time:</strong> 12 weeks<br>
+                                    <strong>Cost Multiplier:</strong> 0.9x current materials (cost savings!)
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%); padding: 1.5rem; border-radius: 8px; color: white; margin-top: 1.5rem;">
+                            <h4 style="color: white; margin-bottom: 0.75rem;">🎯 Recommendation</h4>
+                            <p style="opacity: 0.95; line-height: 1.8;">
+                                Start with <strong>Candidate 2 (Modified Cellulose Acetate)</strong> for fastest time-to-market with excellent performance. Pursue Candidate 3 as a parallel cost-reduction initiative given its economic advantage and sustainability profile.
+                            </p>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;">
+                            <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #FF0000;">10x</div>
+                                <div style="font-size: 0.85rem; color: #666;">Faster Discovery</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #FF0000;">92%</div>
+                                <div style="font-size: 0.85rem; color: #666;">Prediction Accuracy</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #FF0000;">$85M</div>
+                                <div style="font-size: 0.85rem; color: #666;">Annual R&D Savings</div>
+                            </div>
+                        </div>
+                    `
+                },
+                'quality-vision': {
+                    icon: '👁️',
+                    title: 'Quality Control Vision AI Agent',
+                    subtitle: 'Live Demo: Real-Time Defect Detection',
+                    content: `
+                        <div class="demo-live-badge">🔴 LIVE DEMO</div>
+                        <h3 style="font-size: 1.5rem; color: #2c2c2c; margin-bottom: 1rem;">Analyzing Production Line Imagery</h3>
+
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #FF0000; margin: 1.5rem 0;">
+                            <strong style="color: #2c2c2c;">Scenario:</strong>
+                            <p style="margin-top: 0.5rem; color: #555;">High-speed vision inspection of Scotch tape rolls (Line 7, Station 12)<br>Processing 120 units/minute</p>
+                        </div>
+
+                        <div class="demo-thinking">🤖 Vision AI analyzing 4K imagery from 8 cameras</div>
+
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid #00ff88; margin: 1.5rem 0;">
+                            <h4 style="color: #00cc6a; margin-bottom: 1rem;">✅ Inspection Complete - Results</h4>
+
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;">
+                                <div style="background: #f0f9ff; padding: 1.25rem; border-radius: 6px;">
+                                    <div style="font-size: 2rem; color: #00cc6a; margin-bottom: 0.5rem;">✓ 118</div>
+                                    <div style="font-size: 0.9rem; color: #555;">Units Passed</div>
+                                </div>
+                                <div style="background: #fff5f5; padding: 1.25rem; border-radius: 6px;">
+                                    <div style="font-size: 2rem; color: #FF0000; margin-bottom: 0.5rem;">⚠ 2</div>
+                                    <div style="font-size: 0.9rem; color: #555;">Defects Detected</div>
+                                </div>
+                            </div>
+
+                            <h5 style="color: #FF0000; margin-bottom: 1rem; font-size: 1.1rem;">Detected Issues:</h5>
+
+                            <div style="background: #fff5f5; padding: 1.25rem; border-radius: 6px; margin-bottom: 1rem; border-left: 3px solid #FF0000;">
+                                <strong style="color: #FF0000;">Unit #1047:</strong> Adhesive coverage gap detected
+                                <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                                    📍 Location: 15mm from leading edge, right side<br>
+                                    📏 Size: 2.3mm × 0.8mm gap<br>
+                                    ⚡ Action: Auto-rejected, flagged for quality review<br>
+                                    🔍 Root Cause Analysis: Temperature fluctuation in adhesive applicator
+                                </p>
+                            </div>
+
+                            <div style="background: #fff5f5; padding: 1.25rem; border-radius: 6px; border-left: 3px solid #FF0000;">
+                                <strong style="color: #FF0000;">Unit #1089:</strong> Color inconsistency detected
+                                <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                                    📍 Location: Core winding area<br>
+                                    🎨 Issue: 4.2% color deviation from spec (ΔE = 3.1)<br>
+                                    ⚡ Action: Routed to secondary inspection<br>
+                                    🔍 Recommendation: Check dye batch mixing ratios
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%); padding: 1.5rem; border-radius: 8px; color: white; margin-top: 1.5rem;">
+                            <h4 style="color: white; margin-bottom: 0.75rem;">🎯 Automated Actions Taken</h4>
+                            <ul style="opacity: 0.95; line-height: 2; margin-left: 1.25rem;">
+                                <li>Both defective units automatically diverted to reject bin</li>
+                                <li>Alert sent to line supervisor's mobile device</li>
+                                <li>Temperature adjustment recommendation sent to adhesive system</li>
+                                <li>Quality report updated in real-time dashboard</li>
+                            </ul>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;">
+                            <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #FF0000;">99.7%</div>
+                                <div style="font-size: 0.85rem; color: #666;">Defect Detection</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #FF0000;">8x</div>
+                                <div style="font-size: 0.85rem; color: #666;">Faster Inspection</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #FF0000;">$12M</div>
+                                <div style="font-size: 0.85rem; color: #666;">Annual Cost Savings</div>
+                            </div>
+                        </div>
+                    `
+                },
+                'consumer-insights': {
+                    icon: '🔍',
+                    title: 'Consumer Insights & Trend Prediction Agent',
+                    subtitle: 'Live Demo: Market Analysis & Product Opportunity',
+                    content: `
+                        <div class="demo-live-badge">🔴 LIVE DEMO</div>
+                        <h3 style="font-size: 1.5rem; color: #2c2c2c; margin-bottom: 1rem;">Identifying Next Consumer Trend</h3>
+
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #FF0000; margin: 1.5rem 0;">
+                            <strong style="color: #2c2c2c;">User Prompt:</strong>
+                            <p style="margin-top: 0.5rem; color: #555;">"Analyze social media trends, search data, and competitor products to identify emerging opportunities in the home organization category for Q2 2025"</p>
+                        </div>
+
+                        <div class="demo-thinking">🤖 Agent analyzing 2.5M social posts, 180K reviews, 50 competitors</div>
+
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid #00ff88; margin: 1.5rem 0;">
+                            <h4 style="color: #00cc6a; margin-bottom: 1rem;">✅ Analysis Complete - Top Opportunity Identified</h4>
+
+                            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0066cc; margin-bottom: 1.5rem;">
+                                <h5 style="color: #0066cc; font-size: 1.3rem; margin-bottom: 1rem;">🎯 Opportunity: "Eco-Modular Home Walls"</h5>
+                                <p style="color: #555; line-height: 1.8; margin-bottom: 1rem;">
+                                    Consumers are seeking <strong>removable, reusable wall organization systems</strong> made from sustainable materials that can be rearranged without damage. Strong interest from Gen Z and Millennials (ages 22-38) in urban apartments.
+                                </p>
+
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem;">
+                                    <div style="background: rgba(255,255,255,0.7); padding: 1rem; border-radius: 6px;">
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: #0066cc;">847K</div>
+                                        <div style="font-size: 0.85rem; color: #666;">Social Mentions (↑ 156% YoY)</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.7); padding: 1rem; border-radius: 6px;">
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: #0066cc;">$420M</div>
+                                        <div style="font-size: 0.85rem; color: #666;">Estimated Market Size</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 style="color: #2c2c2c; margin-bottom: 1rem;">Key Consumer Pain Points:</h5>
+                            <div style="background: #fff5f5; padding: 1rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>1. Damage-free removal</strong> (mentioned in 68% of reviews)<br>
+                                <span style="font-size: 0.85rem; color: #666;">Consumers frustrated with adhesives that damage walls or lose strength</span>
+                            </div>
+                            <div style="background: #fff5f5; padding: 1rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>2. Sustainability concerns</strong> (mentioned in 54% of reviews)<br>
+                                <span style="font-size: 0.85rem; color: #666;">Demand for recyclable, non-plastic alternatives to traditional organizers</span>
+                            </div>
+                            <div style="background: #fff5f5; padding: 1rem; border-radius: 6px;">
+                                <strong>3. Aesthetic flexibility</strong> (mentioned in 61% of reviews)<br>
+                                <span style="font-size: 0.85rem; color: #666;">Want products that match changing decor styles without permanent commitment</span>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%); padding: 1.5rem; border-radius: 8px; color: white; margin-top: 1.5rem;">
+                            <h4 style="color: white; margin-bottom: 0.75rem;">💡 Recommended Action Plan</h4>
+                            <ul style="opacity: 0.95; line-height: 2; margin-left: 1.25rem;">
+                                <li><strong>Product Concept:</strong> "Command Flex Wall System" - modular grid with bio-based adhesive</li>
+                                <li><strong>Timeline:</strong> 6-month development, Q3 2025 launch</li>
+                                <li><strong>Target Price:</strong> $24.99 starter kit (competitive with market leaders at $29-35)</li>
+                                <li><strong>Revenue Projection:</strong> $85M in year 1 (capturing 20% of addressable market)</li>
+                            </ul>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;">
+                            <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #FF0000;">87%</div>
+                                <div style="font-size: 0.85rem; color: #666;">Trend Accuracy</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #FF0000;">3 wks</div>
+                                <div style="font-size: 0.85rem; color: #666;">Analysis Time Saved</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #FF0000;">$85M</div>
+                                <div style="font-size: 0.85rem; color: #666;">Y1 Revenue Potential</div>
+                            </div>
+                        </div>
+                    `
+                }
+            };
+
+            const demo = demos[agentType];
+            if (demo) {
+                content.innerHTML = `
+                    <button class="demo-modal-close" onclick="closeDemoModal()">×</button>
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">${demo.icon}</div>
+                        <h2 style="font-size: 2rem; color: #2c2c2c; margin-bottom: 0.5rem;">${demo.title}</h2>
+                        <p style="color: #666; font-size: 1.1rem;">${demo.subtitle}</p>
+                    </div>
+                    ${demo.content}
+                `;
+            }
+        }
+
+        function closeDemoModal() {
+            const modal = document.getElementById('demoModal');
+            modal.classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('demoModal');
+            if (event.target === modal) {
+                closeDemoModal();
+            }
+        });
     </script>
+
+    <!-- Demo Modal -->
+    <div id="demoModal" class="demo-modal">
+        <div class="demo-modal-content" id="demoModalContent">
+            <!-- Demo content will be populated by JavaScript -->
+        </div>
+    </div>
+
 </body>
 </html>
